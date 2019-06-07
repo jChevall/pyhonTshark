@@ -20,7 +20,7 @@
 
 
 import pandas as pd
-from bokeh.plotting import output_file, Chord
+from bokeh.charts import output_file, Chord
 from bokeh.io import show
 from bokeh.sampledata.les_mis import data
  
@@ -38,3 +38,4 @@ source_data
 chord_from_df = Chord(source_data, source="name_x", target="name_y", value="value")
 output_file('chord-diagram-bokeh.html', mode="inline")
 show(chord_from_df)
+

@@ -31,6 +31,7 @@ capture = pyshark.LiveCapture(interface=interface)
 # time: Absolute time between the current packet and the first packet
 # window: The TCP window size (TCP packets only)
 
+
 def print_callback(pkt):
         print_conversation_header(pkt)
         tools.pause()
