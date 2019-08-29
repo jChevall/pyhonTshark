@@ -1,38 +1,30 @@
 import pyshark
-import asyncio
-import nest_asyncio
+import time;
 
-
-# Env variable
+# Const
 interface = 'enp2s0'
 
-# Variable
-# packetCollection = None
 
-#
-def createJson(packet):
+def create_json(packet):
     return {
         "ipDest": packet.destination,
         "ipSrc": packet.source,
         "protocol": packet.protocol,
         "info": packet.info,
         "length": packet.length,
+        "date": time.time(),
     }
 
-def iteratePacket(packetIterator, collection):
+def iterate_packet(packetIterator, collection):
     for packet in packetIterator():
-        print("Test 3")
-        json = createJson(packet)
+        json = create_json(packet)
         savedPacket = collection.document()
         savedPacket.set(json)
 
 # Parse Capture
-async def startSniffer(collection):
-    print("Test 1")
+def start_sniffer(collection):
     # Sniff from interface
-    capture = pyshark.LiveCapture(interface= "enp2s0", only_summaries=True)
+    capture = pyshark.LiveCapture(only_summaries=True)
     packetIterator = capture.sniff_continuously
-
-    print("Test 2")
     # Iterate tought capture to parse packet and save it in Database
-    iteratePacket(packetIterator, collection)
+    iterate_packet(packetIterator, collection)

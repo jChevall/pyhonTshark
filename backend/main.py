@@ -3,14 +3,18 @@ from firebase_admin import firestore
 import flask
 import asyncio
 import nest_asyncio
-# import sniffer
+import sniffer
 import pyshark
 from threading import Thread
 from multiprocessing import Process
 import time
+import my_service
+from datetime import datetime
+from flask import Flask
+from flask_cors import CORS
 
-
-app = flask.Flask(__name__)
+app = Flask(__name__)
+cors = CORS(app, resources={r"/api/*": {"Access-Control-Allow-Origin": "*"}})
 
 firebase_admin.initialize_app()
 db = firestore.client()
@@ -26,10 +30,19 @@ def start_sniffer():
 @app.route('/getRawData')
 def getRawData():
     # asyncio.run(sniffer.startSniffer())
-    data = TEST_COLLECTION.get()
-    print(data.to_dict())
+    my_data = my_service.get_raw_data(TEST_COLLECTION)
     # return flask.jsonify({'message': "Sniffer has been launched"})
-    return flask.jsonify(data.to_dict())
+    return flask.jsonify(my_data)
+
+@app.route('/getCircos', methods=['POST'])
+def getCircos():
+    req = flask.request.json
+    # Get data from json
+    dates = req["dates"]
+    # Send data to service
+    result = my_service.get_circos_data(TEST_COLLECTION, dates)
+    # Return circos data
+    return flask.jsonify(result)
 
 def start_rest_api():
     print("Start REST API")
@@ -38,44 +51,19 @@ def start_rest_api():
 def start_sniffer():
     print("Start Sniffing")
     # Sniff from interface
-    capture = pyshark.LiveCapture(interface= "enp2s0", only_summaries=True)
-    packetIterator = capture.sniff_continuously
-    # Iterate tought capture to parse packet and save it in Database
-    iterate_packet(packetIterator)
-
-def create_json(packet):
-    return {
-        "ipDest": packet.destination,
-        "ipSrc": packet.source,
-        "protocol": packet.protocol,
-        "info": packet.info,
-        "length": packet.length,
-    }
-
-def iterate_packet(packetIterator):
-    for packet in packetIterator():
-        json = create_json(packet)
-        savedPacket = TEST_COLLECTION.document()
-        savedPacket.set(json)
+    sniffer.start_sniffer(TEST_COLLECTION)
 
 # Run the following script
 if __name__ == '__main__':
     # Testing
-    doc_ref = db.collection(u'test').list_documents()
-    print(doc_ref)
+    # my_service.get_raw_data(TEST_COLLECTION)
 
-    try:
-        doc = doc_ref.get()
-        print(u'Document data: {}'.format(doc.to_dict()))
-    except google.cloud.exceptions.NotFound:
-        print(u'No such document!')
+    # Launch flask (REST API) in a process
+    flask_process = Process(target=start_rest_api)
+    flask_process.daemon = True # Used to kill the process when handler the kill sign (Ctrl-C)
+    flask_process.start()
 
-    # # Launch flask (REST API) in a process
-    # flask_process = Process(target=start_rest_api)
-    # flask_process.daemon = True # Used to kill the process when handler the kill sign (Ctrl-C)
-    # flask_process.start()
-    #
-    # # Launch Sniffer (Pyshark) in a process
+    # Launch Sniffer (Pyshark) in a process
     # sniffer_process = Process(target=start_sniffer)
     # sniffer_process.daemon = True # Used to kill the process when handler the kill sign (Ctrl-C)
     # sniffer_process.start()
