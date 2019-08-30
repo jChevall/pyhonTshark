@@ -1,14 +1,37 @@
-<h1>{{title}}</h1>
 <!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js"></script>
+<!-- <script src="https://d3js.org/d3.v4.js"></script>
+
+<h1>{{title}}</h1> -->
+
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button>
+      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+    </button>
+    <h1>PyShark DataViz</h1>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <mat-nav-list>
+      <a mat-list-item (click)="sidenav.toggle()" [routerLink]="'/sniffer'"> Manage Sniffer </a>
+      <a mat-list-item (click)="sidenav.toggle()" [routerLink]="'/dictionary'"> Ip Dictionary </a>
+      <a mat-list-item (click)="sidenav.toggle()" [routerLink]="'/chart'"> Data Viz </a>
+      <a mat-list-item (click)="sidenav.toggle()" mat-list-item>Close</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div style="height: 88vh ;">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
 
 <!-- Create a div where the graph will take place -->
-<div id="my_dataviz"></div>
+<!-- <div id="my_dataviz"></div>
+<app-circos></app-circos> -->
 
-<div>
-<ul>
-<li *ngFor="let data of rawData | async">{{data.protocol}}</li>
-</ul>
-</div>
-
-<router-outlet></router-outlet>
+<!-- <router-outlet></router-outlet> -->

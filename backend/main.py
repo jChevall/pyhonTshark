@@ -11,10 +11,11 @@ import time
 import my_service
 from datetime import datetime
 from flask import Flask
-from flask_cors import CORS
+from flask_cors import CORS,cross_origin
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"Access-Control-Allow-Origin": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
+cors = CORS(app, resources={r"/": {"origins": "http://localhost:4200"}})
 
 firebase_admin.initialize_app()
 db = firestore.client()
@@ -22,12 +23,14 @@ PACKET_COLLECTION = db.collection('packet')
 TEST_COLLECTION = db.collection('test')
 
 @app.route('/startSniffer')
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def start_sniffer():
     # asyncio.run(sniffer.startSniffer())
     return flask.jsonify({'message': "Sniffer has been launched"})
     # return flask.jsonify(data)
 
 @app.route('/getRawData')
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def getRawData():
     # asyncio.run(sniffer.startSniffer())
     my_data = my_service.get_raw_data(TEST_COLLECTION)
@@ -35,9 +38,11 @@ def getRawData():
     return flask.jsonify(my_data)
 
 @app.route('/getCircos', methods=['POST'])
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def getCircos():
     req = flask.request.json
     # Get data from json
+    print(req)
     dates = req["dates"]
     # Send data to service
     result = my_service.get_circos_data(TEST_COLLECTION, dates)
