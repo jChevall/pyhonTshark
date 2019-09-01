@@ -1,21 +1,20 @@
-import { ChartData } from './../../services/request.service';
-import { RequestService } from 'src/app/services/request.service';
-import { Component, OnInit} from '@angular/core';
+import { RequestService, ChartData } from './../../services/request.service';
+import { Component, OnInit } from '@angular/core';
 
 const FROM = 'from';
 const TO = 'to';
 
 @Component({
-  selector: 'app-chart',
-  templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.css']
+  selector: 'app-heatmap-view',
+  templateUrl: './heatmap-view.component.html',
+  styleUrls: ['./heatmap-view.component.css']
 })
-export class ChartComponent implements OnInit {
+export class HeatmapViewComponent implements OnInit {
 
   fromSelectedDate: Date;
   toSelectedDate: Date;
-  circosData: ChartData;
-  circosPrinted = false;
+  heatmapData: ChartData;
+  heatmapPrinted = false;
 
   constructor(
     private requestService: RequestService,
@@ -33,7 +32,7 @@ export class ChartComponent implements OnInit {
   }
 
   getCirosData() {
-    this.circosPrinted = !this.circosPrinted;
+    this.heatmapPrinted = !this.heatmapPrinted;
     const dates: Date[] = [];
     if (this.fromSelectedDate) {
       dates.push(this.fromSelectedDate);
@@ -44,7 +43,8 @@ export class ChartComponent implements OnInit {
 
       this.requestService.getCircosData(dates)
         .subscribe((res) => {
-          this.circosData = res;
+          console.log(res);
+          this.heatmapData = res;
         });
     }
   }

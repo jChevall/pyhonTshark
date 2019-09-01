@@ -1,5 +1,5 @@
 <div class="coreview">
-  <h2> Packet count : chord chart visualization </h2>
+  <h2> Packet count : heatmap chart visualization </h2>
   <div class="container">
     <div>
         <app-date-picker [preSelectDate]="fromSelectedDate" (valueChange)='dateChange($event, "from")'></app-date-picker>
@@ -9,10 +9,10 @@
         <button mat-mini-fab color="primary" (click)="getCirosData()">Start</button>
     </div>
     <div *ngIf="circosPrinted">
-        <button mat-mini-fab color="primary" (click)="this.circosPrinted = !this.circosPrinted">Cancel</button>
+        <button mat-mini-fab color="primary" (click)="this.heatmapPrinted = !this.heatmapPrinted">Cancel</button>
     </div>
   </div>
   <div class="container">
-    <app-circos [printed]="!this.circosPrinted" [circosData]="circosData"></app-circos>
+    <app-heatmap [printed]="!this.heatmapPrinted" [heatmapData]="heatmapData"></app-heatmap>
   </div>
 </div>

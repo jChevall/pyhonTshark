@@ -1,0 +1,32 @@
+.heatmap{
+  width: 600px;
+  height: 600px;
+  padding-top: 20px;
+}
+
+.d3-chart {
+  height: 100%;
+  margin: 7px;
+}
+
+p-dropdown .ui-dropdown {
+  width: 100px !important;
+}
+
+text.mono {
+  font-size: 9pt;
+  fill: #333;
+}
+
+text.axis-workweek {
+  fill: #333;
+}
+
+text.axis-worktime {
+  fill: #333;
+}
+
+.heatmap-container {
+  vertical-align: middle;
+  overflow: auto;
+}

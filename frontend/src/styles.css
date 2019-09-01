@@ -1,4 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
+
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Global css class*/
+
+.app {
+  height: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.coreview{
+  padding-left: 5%;
+  padding-right: 5%;
+  height: inherit;
+  width: inherit;
+}

@@ -1,1 +1,5 @@
-<p>dictionary works!</p>
+<div class="coreview">
+  <h2> Ip adress assigned to a name dictionary</h2>
+  <button class="button" mat-raised-button (click)="openDialog()">Create an assignement</button>
+  <app-dashboard [dataSource]="dataSource" (refreshEmitter)="refreshTable()" ></app-dashboard>
+</div>

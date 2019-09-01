@@ -1,6 +1,4 @@
-import * as d3 from 'd3';
 import { Component, OnInit } from '@angular/core';
-import { RequestService, CircosData } from './services/request.service';
 
 @Component({
   selector: 'app-root',

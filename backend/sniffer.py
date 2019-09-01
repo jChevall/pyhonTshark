@@ -1,5 +1,5 @@
 import pyshark
-import time;
+import time
 
 # Const
 interface = 'enp2s0'

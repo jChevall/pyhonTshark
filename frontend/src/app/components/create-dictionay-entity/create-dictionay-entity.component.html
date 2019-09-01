@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Name assignement</h1>
+<div mat-dialog-content>
+  <p>Assign an Ip adress to name</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.ipAdress">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.name">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>
