@@ -21,6 +21,7 @@ firebase_admin.initialize_app()
 db = firestore.client()
 PACKET_COLLECTION = db.collection('packets')
 TEST_COLLECTION = db.collection('test')
+TEST_COLLECTION2 = db.collection('test2')
 IP_ASSIGNEMENT_COLLECTION = db.collection('ipAssignnement')
 
 @app.route('/createCoupleIpAdressName', methods=['POST'])
@@ -58,9 +59,7 @@ def delete_couple_ipadress_name(id):
 @app.route('/getRawData')
 @cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def get_raw_data():
-    # asyncio.run(sniffer.startSniffer())
-    my_data = my_service.get_raw_data(TEST_COLLECTION)
-    # return flask.jsonify({'message': "Sniffer has been launched"})
+    my_data = my_service.get_raw_data(TEST_COLLECTION2)
     return flask.jsonify(my_data)
 
 @app.route('/getCircos', methods=['POST'])
@@ -70,7 +69,7 @@ def get_circos_data():
     # Get data from json
     dates = req["dates"]
     # Send data to service
-    result = my_service.get_circos_data(TEST_COLLECTION, dates)
+    result = my_service.get_circos_data(TEST_COLLECTION2, dates)
     # Return circos data
     return flask.jsonify(result)
 
@@ -81,7 +80,7 @@ def start_rest_api():
 def start_sniffing():
     print("Start Sniffing")
     # Sniff from interface
-    sniffer.start_sniffer(PACKET_COLLECTION)
+    sniffer.start_sniffer(TEST_COLLECTION2)
 
 # Init Process
 flask_process = Process(target=start_rest_api)
@@ -91,44 +90,12 @@ sniffer_process.daemon = True # Used to kill the process when handler the kill s
 
 # Run the following script
 if __name__ == '__main__':
-    # Launch flask (REST API)
+    # Launch flask REST API
     flask_process.start()
 
-    # sniffer_process.start()
+    # Launch Sniffer
+    sniffer_process.start()
 
     # Used to don't finish the script (cause 2 process running)
     while True:
        time.sleep(1)
-
-
-
-# @app.route('/heroes', methods=['POST'])
-# def create_hero():
-#     req = flask.request.json
-#     hero = SUPERHEROES.document()
-#     hero.set(req)
-#     return flask.jsonify({'id': hero.id}), 201
-#
-# @app.route('/heroes/<id>')
-# def read_hero(id):
-#     return flask.jsonify(_ensure_hero(id).to_dict())
-#
-# @app.route('/heroes/<id>', methods=['PUT'])
-# def update_hero(id):
-#     _ensure_hero(id)
-#     req = flask.request.json
-#     SUPERHEROES.document(id).set(req)
-#     return flask.jsonify({'success': True})
-#
-# @app.route('/heroes/<id>', methods=['DELETE'])
-# def delete_hero(id):
-#     _ensure_hero(id)
-#     SUPERHEROES.document(id).delete()
-#     return flask.jsonify({'success': True})
-#
-# def _ensure_hero(id):
-#     try:
-#         return SUPERHEROES.document(id).get()
-#     except:
-#         flask.abort(404)
-#

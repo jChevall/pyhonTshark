@@ -4,7 +4,6 @@ import time
 # Const
 interface = 'enp2s0'
 
-
 def create_json(packet):
     return {
         "ipDest": packet.destination,
@@ -24,7 +23,8 @@ def iterate_packet(packetIterator, collection):
 # Parse Capture
 def start_sniffer(collection):
     # Sniff from interface
-    capture = pyshark.LiveCapture(only_summaries=True)
+    # Filter port 4200 (front) and port 3010 (back)
+    capture = pyshark.LiveCapture(only_summaries=True, bpf_filter='not tcp port 4200 and not tcp port 3010')
     packetIterator = capture.sniff_continuously
     # Iterate tought capture to parse packet and save it in Database
     iterate_packet(packetIterator, collection)

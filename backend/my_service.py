@@ -8,16 +8,11 @@ def get_circos_data(collection, dates):
         array = get_raw_data(collection)
         filtered_array = filter_raw_data_one_date(array, timestamp)
         # create_circos_dataV2(filtered_array)
-        # circo_data = create_circos_data(filtered_array)
         return create_circos_data(filtered_array)
     else:
-        timestamp_from = time.mktime(datetime.fromtimestamp(dates[0]).timetuple())
-        timestamp_to = time.mktime(datetime.fromtimestamp(dates[1]).timetuple())
         # Call circos Data
         array = get_raw_data(collection)
-        filtered_array = filter_raw_data_two_date(array, timestamp_from, timestamp_to)
-        # create_circos_dataV2(filtered_array)
-        # circo_data = create_circos_data(filtered_array)
+        filtered_array = filter_raw_data_two_date(array, dates[0], dates[1])
         return create_circos_data(filtered_array)
 
 def get_raw_data(collection):
@@ -32,9 +27,10 @@ def filter_raw_data_one_date(array, timestamp):
     return list(data)
 
 def filter_raw_data_two_date(array, timestamp_from, timestamp_to):
-    f1 = lambda x: x["date"] > timestamp_from
-    f2 = lambda x: x["date"] < timestamp_to
+    f1 = lambda x: int(x["date"]) >= timestamp_from
+    f2 = lambda x: int(x["date"]) < (timestamp_to + 24*60*60)
 
+    # data = filter(lambda x : int(x["date"]) >= timestamp_from and int(x["date"]) < (timestamp_to + 24*60*60), array )
     data = filter(f1 and f2, array)
     return list(data)
 
@@ -45,7 +41,6 @@ def create_circos_data(filtered_array):
 
     # Make 2 tab : one with unique source adress and another with unique destination adress
     for packet in filtered_array:
-        # print(packet["ipSrc"], packet["ipDest"])
         if ip_src_array.count(packet["ipSrc"]) == 0 :
             ip_src_array.append(packet["ipSrc"])
         if ip_dest_array.count(packet["ipDest"]) == 0 :
@@ -69,5 +64,4 @@ def create_circos_data(filtered_array):
             matrix[ip_src][index_dest] = count_packet
 
     result = {"matrix": matrix, "ip_src_array": ip_src_array, "ip_dest_array": ip_dest_array}
-    # print(result)
     return result
