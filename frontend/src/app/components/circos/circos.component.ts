@@ -40,6 +40,8 @@ export class CircosComponent implements OnInit, OnChanges, AfterViewInit {
 
   private svg;
 
+  private noData = false;
+
   @Input() printed;
 
   assignementMap = new Map();
@@ -54,23 +56,21 @@ export class CircosComponent implements OnInit, OnChanges, AfterViewInit {
   ngAfterViewInit() {
     this.requestService.readAllIpAssignement().subscribe((res) => {
       const tab: CoupleIpAdressName[] = res['data'];
-      tab.forEach(element => {
-        this.assignementMap.set(element.data.ipAdress, element.data.name);
+      tab.forEach((e) => {
+        this.assignementMap.set(e.data.ipAdress, e.data.name);
       });
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.noData = false;
+    d3.select('div.circos-container').remove();
     if (changes.circosData && this.circosData) {
       this.data = {
         labels: this.circosData['ip_src_array'],
         data: this.circosData.matrix,
       };
       this.doCircos();
-    }
-    if (changes.printed && this.printed) {
-      d3.select('div.circos-container').remove();
-      d3.select('h3').remove();
     }
   }
 
@@ -88,9 +88,8 @@ export class CircosComponent implements OnInit, OnChanges, AfterViewInit {
 
     if (outerRadius > 0 && innerRadius > 0) {
       if (this.data.labels.length === 0) {
-        element.innerHTML  = '<h3>Sorry but we have not found any data</h3>';
+        this.noData = true;
       } else {
-        d3.select('h3').remove();
         this.generateCircos(innerRadius, outerRadius, width - padding, height - padding);
       }
     }
@@ -104,7 +103,6 @@ export class CircosComponent implements OnInit, OnChanges, AfterViewInit {
    * @param height height in px
    */
   private generateCircos(innerRadius, outerRadius, width, height) {
-    console.log('generateCircos');
     const element = this.chart.nativeElement;
     // remove the div with the class circos-container
     d3.select('div.circos-container').remove();

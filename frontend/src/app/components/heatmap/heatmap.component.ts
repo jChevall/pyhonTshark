@@ -83,6 +83,7 @@ export class HeatmapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() printed;
 
   private svg;
+  private noData = false;
   public colorsPicker: string[] = ['#2c7bb6', '#00a6ca', '#90eb9d', '#ffff8c', '#f9d057', '#e76818', '#d7191c'];
   public selectedColor = '#673AB7';
   public colors = []; // SelectItem [] = [];
@@ -106,16 +107,14 @@ export class HeatmapComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.heatmapData) {
-      console.log(this.heatmapData);
+    this.noData = false;
+    d3.select('div.heatmap-container').remove();
+    if (changes.heatmapData && this.heatmapData) {
       this.data = {
         labels: this.heatmapData['ip_src_array'],
         data: this.heatmapData.matrix,
       };
       this.doHeatmap();
-    }
-    if (changes.printed) {
-      d3.select('div.heatmap-container').remove();
     }
   }
 
@@ -136,7 +135,11 @@ export class HeatmapComponent implements OnInit, OnChanges, AfterViewInit {
     const outerRadius = Math.min(width, height) * 0.5;
     const innerRadius = outerRadius;
     if (outerRadius > 0 && innerRadius > 0) {
-      this.generateHeatmap(width, height);
+      if (this.data.labels.length === 0) {
+        this.noData = true;
+      } else {
+        this.generateHeatmap(width, height);
+      }
     }
   }
 

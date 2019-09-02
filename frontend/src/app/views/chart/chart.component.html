@@ -9,10 +9,10 @@
         <button mat-mini-fab color="primary" (click)="getCirosData()">Start</button>
     </div>
     <div *ngIf="circosPrinted">
-        <button mat-mini-fab color="primary" (click)="this.circosPrinted = !this.circosPrinted">Cancel</button>
+        <button mat-mini-fab color="primary" (click)="onCancel()">Cancel</button>
     </div>
   </div>
   <div class="container">
-    <app-circos [printed]="!this.circosPrinted" [circosData]="circosData"></app-circos>
+    <app-circos [printed]="circosPrinted" [circosData]="circosData"></app-circos>
   </div>
 </div>

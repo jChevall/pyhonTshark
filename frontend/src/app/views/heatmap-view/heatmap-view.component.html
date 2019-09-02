@@ -5,14 +5,14 @@
         <app-date-picker [preSelectDate]="fromSelectedDate" (valueChange)='dateChange($event, "from")'></app-date-picker>
         <app-date-picker [preSelectDate]="toSelectedDate" (valueChange)='dateChange($event, "to")'></app-date-picker>
     </div>
-    <div *ngIf="!circosPrinted">
+    <div *ngIf="!heatmapPrinted">
         <button mat-mini-fab color="primary" (click)="getCirosData()">Start</button>
     </div>
-    <div *ngIf="circosPrinted">
-        <button mat-mini-fab color="primary" (click)="this.heatmapPrinted = !this.heatmapPrinted">Cancel</button>
+    <div *ngIf="heatmapPrinted">
+        <button mat-mini-fab color="primary" (click)="onCancel()">Cancel</button>
     </div>
   </div>
   <div class="container">
-    <app-heatmap [printed]="!this.heatmapPrinted" [heatmapData]="heatmapData"></app-heatmap>
+    <app-heatmap [printed]="heatmapPrinted" [heatmapData]="heatmapData"></app-heatmap>
   </div>
 </div>

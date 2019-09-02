@@ -43,9 +43,12 @@ export class HeatmapViewComponent implements OnInit {
 
       this.requestService.getCircosData(dates)
         .subscribe((res) => {
-          console.log(res);
           this.heatmapData = res;
         });
     }
+  }
+
+  onCancel() {
+    this.heatmapPrinted = !this.heatmapPrinted;
   }
 }

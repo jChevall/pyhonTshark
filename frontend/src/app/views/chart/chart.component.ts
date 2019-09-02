@@ -48,4 +48,8 @@ export class ChartComponent implements OnInit {
         });
     }
   }
+
+  onCancel() {
+    this.circosPrinted = !this.circosPrinted;
+  }
 }
