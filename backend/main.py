@@ -20,8 +20,7 @@ cors = CORS(app, resources={r"/": {"origins": "http://localhost:4200"}})
 firebase_admin.initialize_app()
 db = firestore.client()
 PACKET_COLLECTION = db.collection('packets')
-TEST_COLLECTION = db.collection('test')
-TEST_COLLECTION2 = db.collection('test2')
+# TEST_COLLECTION = db.collection('test')
 IP_ASSIGNEMENT_COLLECTION = db.collection('ipAssignnement')
 
 @app.route('/createCoupleIpAdressName', methods=['POST'])
@@ -59,7 +58,7 @@ def delete_couple_ipadress_name(id):
 @app.route('/getRawData')
 @cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def get_raw_data():
-    my_data = my_service.get_raw_data(TEST_COLLECTION2)
+    my_data = my_service.get_raw_data(PACKET_COLLECTION)
     return flask.jsonify(my_data)
 
 @app.route('/getCircos', methods=['POST'])
@@ -69,7 +68,7 @@ def get_circos_data():
     # Get data from json
     dates = req["dates"]
     # Send data to service
-    result = my_service.get_circos_data(TEST_COLLECTION2, dates)
+    result = my_service.get_circos_data(PACKET_COLLECTION, dates)
     # Return circos data
     return flask.jsonify(result)
 
@@ -80,7 +79,7 @@ def start_rest_api():
 def start_sniffing():
     print("Start Sniffing")
     # Sniff from interface
-    sniffer.start_sniffer(TEST_COLLECTION2)
+    sniffer.start_sniffer(PACKET_COLLECTION)
 
 # Init Process
 flask_process = Process(target=start_rest_api)
@@ -94,7 +93,7 @@ if __name__ == '__main__':
     flask_process.start()
 
     # Launch Sniffer
-    sniffer_process.start()
+    # sniffer_process.start()
 
     # Used to don't finish the script (cause 2 process running)
     while True:

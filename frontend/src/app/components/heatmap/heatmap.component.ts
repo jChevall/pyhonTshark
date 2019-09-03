@@ -8,53 +8,9 @@ import { RequestService } from 'src/app/services/request.service';
  * '900' : [50, 100, 200, 300, 400, 500, 600]
  */
 export const PALETTE_HEATMAP = {
-  '#F44336' : {
-    namePalette: 'Red',
-    palette: ['#FFEBEE', '#FFCDD2', '#EF9A9A', '#E57373', '#EF5350', '#F44336', '#E53935']
-  },
-  '#673AB7' : {
-    namePalette: 'Purple',
-    palette: ['#EDE7F6', '#D1C4E9', '#B39DDB', '#9575CD', '#7E57C2', '#673AB7', '#5E35B1']
-  },
-  '#3F51B5' : {
-    namePalette: 'Indigo',
-    palette: ['#E8EAF6', '#C5CAE9', '#9FA8DA', '#7986CB', '#5C6BC0', '#3F51B5', '#3949AB']
-  },
-  '#CDDC39' : {
-    namePalette: 'Lime',
-    palette: ['#F9FBE7', '#F0F4C3', '#E6EE9C', '#DCE775', '#D4E157', '#CDDC39', '#C0CA33']
-  },
-  '#2196F3' : {
-    namePalette: 'Bleu',
-    palette: ['#E3F2FD', '#BBDEFB', '#90CAF9', '#64B5F6', '#42A5F5', '#2196F3', '#1E88E5']
-  },
   '#009688' : {
     namePalette: 'Teal',
     palette: ['#E0F2F1', '#B2DFDB', '#80CBC4', '#4DB6AC', '#26A69A', '#009688', '#00897B']
-  },
-  '#4CAF50' : {
-    namePalette: 'Green',
-    palette: ['#E8F5E9', '#C8E6C9', '#A5D6A7', '#81C784', '#66BB6A', '#4CAF50', '#43A047']
-  },
-  '#FFEB3B' : {
-    namePalette: 'Yellow',
-    palette: ['#FFFDE7', '#FFF9C4', '#FFF59D', '#FFF176', '#FFEE58', '#FFEB3B', '#FDD835']
-  },
-  '#795548' : {
-    namePalette: 'Brown',
-    palette: ['#EFEBE9', '#D7CCC8', '#BCAAA4', '#A1887F', '#8D6E63', '#795548', '#6D4C41']
-  },
-  '#9E9E9E' : {
-    namePalette: 'Grey',
-    palette: ['#FAFAFA', '#EEEEEE', '#E0E0E0', '#BDBDBD', '#9E9E9E', '#757575', '#616161']
-  },
-  '#607D8B' : {
-    namePalette: 'Bleu Grey',
-    palette: ['#ECEFF1', '#CFD8DC', '#B0BEC5', '#90A4AE', '#78909C', '#607D8B', '#546E7A']
-  },
-  'coloursRainbow' : {
-    namePalette: 'Chaleur',
-    palette: ['#2c7bb6', '#00a6ca', '#90eb9d', '#ffff8c', '#f9d057', '#e76818', '#d7191c']
   },
 };
 
@@ -84,8 +40,7 @@ export class HeatmapComponent implements OnInit, OnChanges, AfterViewInit {
 
   private svg;
   private noData = false;
-  public colorsPicker: string[] = ['#2c7bb6', '#00a6ca', '#90eb9d', '#ffff8c', '#f9d057', '#e76818', '#d7191c'];
-  public selectedColor = '#673AB7';
+  public selectedColor = '#009688';
   public colors = []; // SelectItem [] = [];
 
   assignementMap = new Map();
@@ -149,7 +104,6 @@ export class HeatmapComponent implements OnInit, OnChanges, AfterViewInit {
    * @param height height of the svg
    */
   private generateHeatmap(width, height) {
-    console.log('generateHeatmap');
     const element = this.chart.nativeElement;
     // remove the div with the class heatmap-container
     d3.select('div.heatmap-container').remove();
@@ -185,20 +139,16 @@ export class HeatmapComponent implements OnInit, OnChanges, AfterViewInit {
     this.svg.selectAll('.xLabel')
       .data(this.data.labels)
       .enter().append('g')
-      .attr('transform',  (d, i) => 'translate( ' + (i * gridElementWidth + labelWidth) + ', ' + (height) + ')')
-      // .attr('transform',  (d, i) => 'translate( ' + (i * gridElementWidth + labelWidth + 10) + ', ' + 40 + ')')
+      // .attr('transform',  (d, i) => 'translate( ' + (i * gridElementWidth + labelWidth) + ', ' + (height) + ')')
+      .attr('transform',  (d, i) => 'translate( ' + (i * gridElementWidth + labelWidth + 10) + ', ' + 40 + ')')
       .append('text')
       .text((d) => this.getLabel(d))
       // .style('text-anchor', 'start')
-      .attr('transform', 'rotate(65)');
+      // .attr('transform', 'rotate(65)');
+      .attr('transform', 'rotate(295)');
 
     let colors: string[] = [];
-    if (this.selectedColor === 'Perso') {
-      colors = this.colorsPicker;
-    } else {
-      // colors = PALETTE_HEATMAP[this.selectedColor].palette
-      colors = PALETTE_HEATMAP[this.selectedColor].palette
-    }
+    colors = PALETTE_HEATMAP[this.selectedColor].palette
 
     // init color palette
     const colorScale = d3.scaleQuantile()
@@ -246,39 +196,39 @@ export class HeatmapComponent implements OnInit, OnChanges, AfterViewInit {
     cards.exit().remove();
 
     // creating color legend
-    const linearGradient = this.svg.append('linearGradient').attr('id', 'linear-gradient');
+    // const linearGradient = this.svg.append('linearGradient').attr('id', 'linear-gradient');
 
-    const gradientScale = d3.scaleLinear().range(colors as any);
+    // const gradientScale = d3.scaleLinear().range(colors as any);
 
-    linearGradient.selectAll('stop').data(gradientScale.range()).enter().append('stop').attr('offset', function (d, i) {
-      return i / (gradientScale.range().length - 1);
-    }).attr('stop-color', function (d) {
-      return d;
-    });
+    // linearGradient.selectAll('stop').data(gradientScale.range()).enter().append('stop').attr('offset', function (d, i) {
+    //   return i / (gradientScale.range().length - 1);
+    // }).attr('stop-color', function (d) {
+    //   return d;
+    // });
 
-    this.svg.append('rect')
-      .attr('width', 300)
-      .attr('height', 20)
-      .style('fill', 'url(#linear-gradient)')
-      .attr('transform', `translate(${element.offsetWidth})`);
+    // this.svg.append('rect')
+    //   .attr('width', 300)
+    //   .attr('height', 20)
+    //   .style('fill', 'url(#linear-gradient)')
+    //   .attr('transform', `translate(${element.offsetWidth})`);
 
-    this.svg.append('g')
-    .selectAll('text')
-    .data([0].concat(colorScale.quantiles()), (d) => {
-        return d - (d % 1);
-    })
-    .enter()
-    .append('text')
-    .attr('class', 'octets')
-    .attr('x', function (d, i) {
-      return '' + ((element.offsetWidth / 2) + i * 45);
-    })
-    .attr('y', (d, i) => {
-      return 0 === i % 2 ? 38 : 8;
-    })
-    .text(function (d) {
-      return d - (d % 1);
-    });
+    // this.svg.append('g')
+    // .selectAll('text')
+    // .data([0].concat(colorScale.quantiles()), (d) => {
+    //     return d - (d % 1);
+    // })
+    // .enter()
+    // .append('text')
+    // .attr('class', 'octets')
+    // .attr('x', function (d, i) {
+    //   return '' + ((element.offsetWidth / 2) + i * 45);
+    // })
+    // .attr('y', (d, i) => {
+    //   return 0 === i % 2 ? 38 : 8;
+    // })
+    // .text(function (d) {
+    //   return d - (d % 1);
+    // });
   }
 
   /**

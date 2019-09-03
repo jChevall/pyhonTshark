@@ -1,9 +1,7 @@
-import { element } from 'protractor';
 import { ChartData, CoupleIpAdressName } from './../../services/request.service';
-import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input, SimpleChanges, AfterViewInit, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input, SimpleChanges, AfterViewInit } from '@angular/core';
 import { RequestService } from 'src/app/services/request.service';
 import * as d3 from 'd3';
-import { stringify } from '@angular/compiler/src/util';
 
 const COLOR_PALETTE: string[] = [
   '#016f9e',
@@ -116,6 +114,7 @@ export class CircosComponent implements OnInit, OnChanges, AfterViewInit {
       .classed('svg-content-responsive', true);
 
     const keys = Object.keys(this.data.data);
+    console.log(keys);
 
     // init differents parameters
     const chord = d3.chord()
@@ -145,9 +144,14 @@ export class CircosComponent implements OnInit, OnChanges, AfterViewInit {
       .data((chords) => chords.groups)
       .enter().append('g');
 
+    console.log('TOTO');
+
     // Labels
     group.append('title')
-      .text((d, i) => `Ip adress: ${this.getLabel(keys[i])}`); // `Mac: ${keys[i]}\nTraffic: ${Math.round(d.value / 10) / 100}%`);
+      .text((d, i) => {
+        console.log(d);
+        return `Ip adress: ${this.getLabel(keys[i])}`; // `Mac: ${keys[i]}\nTraffic: ${Math.round(d.value / 10) / 100}%`);
+      });
 
     const groupPath = group.append('path')
       .attr('id', (d, i) => 'group' + i)

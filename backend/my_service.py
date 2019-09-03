@@ -27,11 +27,15 @@ def filter_raw_data_one_date(array, timestamp):
     return list(data)
 
 def filter_raw_data_two_date(array, timestamp_from, timestamp_to):
+    # print(array[0]['date'], int(array[0]['date']), timestamp_from, timestamp_to)
+    # print(int(array[0]['date']) >= timestamp_from)
+    # print(int(array[0]['date']) < (timestamp_to + 24*60*60))
+
     f1 = lambda x: int(x["date"]) >= timestamp_from
     f2 = lambda x: int(x["date"]) < (timestamp_to + 24*60*60)
 
-    # data = filter(lambda x : int(x["date"]) >= timestamp_from and int(x["date"]) < (timestamp_to + 24*60*60), array )
-    data = filter(f1 and f2, array)
+    data = filter(lambda x : int(x["date"]) >= timestamp_from and int(x["date"]) < (timestamp_to + 24*60*60), array )
+    # data = filter(f1 and f2, array)
     return list(data)
 
 def create_circos_data(filtered_array):

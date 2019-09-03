@@ -17,8 +17,14 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let element">
-        <button md-raised-button (click)="onClickEdit(element)">Edit</button>
-        <button md-raised-button (click)="onClickDelete(element.id)">Delete</button>
+        <button class="button" mat-raised-button (click)="onClickEdit(element)">
+          <mat-icon aria-hidden="false" aria-label="Example home icon">assignment</mat-icon>
+          Edit
+        </button>
+        <button class="button" mat-raised-button (click)="onClickDelete(element.id)">
+          <mat-icon aria-hidden="false" aria-label="Example home icon">delete_forever</mat-icon>
+          Delete
+        </button>
       </td>
     </ng-container>
 

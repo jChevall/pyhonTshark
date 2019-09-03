@@ -23,8 +23,7 @@ def iterate_packet(packetIterator, collection):
 # Parse Capture
 def start_sniffer(collection):
     # Sniff from interface
-    # Filter port 4200 (front) and port 3010 (back)
-    capture = pyshark.LiveCapture(only_summaries=True, bpf_filter='not tcp port 4200 and not tcp port 3010')
+    capture = pyshark.LiveCapture(only_summaries=True, interface=interface)
     packetIterator = capture.sniff_continuously
     # Iterate tought capture to parse packet and save it in Database
     iterate_packet(packetIterator, collection)
