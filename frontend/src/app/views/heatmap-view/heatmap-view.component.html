@@ -2,8 +2,8 @@
   <h2> Packet count : heatmap chart visualization </h2>
   <div class="container">
     <div>
-        <app-date-picker [preSelectDate]="fromSelectedDate" (valueChange)='dateChange($event, "from")'></app-date-picker>
-        <app-date-picker [preSelectDate]="toSelectedDate" (valueChange)='dateChange($event, "to")'></app-date-picker>
+        <app-date-picker [placeholder]="'From date'" [preSelectDate]="fromSelectedDate" (valueChange)='dateChange($event, "from")'></app-date-picker>
+        <app-date-picker [placeholder]="'To date'" [preSelectDate]="toSelectedDate" (valueChange)='dateChange($event, "to")'></app-date-picker>
     </div>
     <div *ngIf="!heatmapPrinted">
         <button mat-mini-fab color="primary" (click)="getCirosData()">Start</button>
@@ -13,6 +13,6 @@
     </div>
   </div>
   <div class="container">
-    <app-heatmap [printed]="heatmapPrinted" [heatmapData]="heatmapData"></app-heatmap>
+    <app-heatmap [loading]="loading" [printed]="heatmapPrinted" [heatmapData]="heatmapData"></app-heatmap>
   </div>
 </div>

@@ -1,11 +1,8 @@
 import firebase_admin
 from firebase_admin import firestore
 import flask
-import asyncio
-import nest_asyncio
 import sniffer
 import pyshark
-from threading import Thread
 from multiprocessing import Process
 import time
 import my_service
@@ -20,7 +17,7 @@ cors = CORS(app, resources={r"/": {"origins": "http://localhost:4200"}})
 firebase_admin.initialize_app()
 db = firestore.client()
 PACKET_COLLECTION = db.collection('packets')
-# TEST_COLLECTION = db.collection('test')
+TEST_COLLECTION = db.collection('test')
 IP_ASSIGNEMENT_COLLECTION = db.collection('ipAssignnement')
 
 @app.route('/createCoupleIpAdressName', methods=['POST'])
@@ -68,7 +65,7 @@ def get_circos_data():
     # Get data from json
     dates = req["dates"]
     # Send data to service
-    result = my_service.get_circos_data(PACKET_COLLECTION, dates)
+    result = my_service.get_circos_data(TEST_COLLECTION, dates)
     # Return circos data
     return flask.jsonify(result)
 

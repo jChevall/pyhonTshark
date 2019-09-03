@@ -16,6 +16,7 @@ export class ChartComponent implements OnInit {
   toSelectedDate: Date;
   circosData: ChartData;
   circosPrinted = false;
+  loading = false;
 
   constructor(
     private requestService: RequestService,
@@ -42,8 +43,10 @@ export class ChartComponent implements OnInit {
         dates.push(this.toSelectedDate);
       }
 
+      this.loading = true;
       this.requestService.getCircosData(dates)
         .subscribe((res) => {
+          this.loading = false;
           this.circosData = res;
         });
     }

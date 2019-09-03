@@ -15,6 +15,7 @@ export class HeatmapViewComponent implements OnInit {
   toSelectedDate: Date;
   heatmapData: ChartData;
   heatmapPrinted = false;
+  loading = false;
 
   constructor(
     private requestService: RequestService,
@@ -41,8 +42,10 @@ export class HeatmapViewComponent implements OnInit {
         dates.push(this.toSelectedDate);
       }
 
+      this.loading = true;
       this.requestService.getCircosData(dates)
         .subscribe((res) => {
+          this.loading = false;
           this.heatmapData = res;
         });
     }

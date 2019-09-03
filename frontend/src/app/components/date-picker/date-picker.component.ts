@@ -9,6 +9,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 export class DatePickerComponent implements OnInit  {
 
   @Input() preSelectDate: Date;
+  @Input() placeholder: string;
 
   @Output() valueChange = new EventEmitter();
 

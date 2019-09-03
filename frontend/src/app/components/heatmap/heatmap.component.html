@@ -1,4 +1,5 @@
-<div class="container" *ngIf="noData">
-  <h3>Sorry but we have not found any data</h3>
+<div class="container">
+  <h3  *ngIf="noData">Sorry but we have not found any data</h3>
+  <mat-spinner *ngIf="loading"></mat-spinner>
 </div>
 <div class="heatmap" #chart></div>

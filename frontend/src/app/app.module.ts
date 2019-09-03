@@ -25,6 +25,7 @@ import {
    MatOptionModule,
    MatSelectModule,
    MatDialogModule,
+   MatProgressSpinnerModule,
    } from '@angular/material';
 
 // My services
@@ -80,6 +81,7 @@ import { HomeComponent } from './views/home/home.component';
     MatOptionModule,
     MatSelectModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
     // CKT Import
     CdkTableModule,
   ],

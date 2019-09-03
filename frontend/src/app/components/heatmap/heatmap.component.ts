@@ -24,6 +24,7 @@ const MIN_HEIGHT_RECT = 25;
 export class HeatmapComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() heatmapData: ChartData;
+  @Input() loading;
 
   @Input() config;
   private data;

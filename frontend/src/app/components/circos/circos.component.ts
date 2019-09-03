@@ -29,6 +29,7 @@ const COLOR_PALETTE: string[] = [
 export class CircosComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() circosData: ChartData;
+  @Input() loading;
   private data;
 
   private chart: ElementRef;
@@ -114,7 +115,6 @@ export class CircosComponent implements OnInit, OnChanges, AfterViewInit {
       .classed('svg-content-responsive', true);
 
     const keys = Object.keys(this.data.data);
-    console.log(keys);
 
     // init differents parameters
     const chord = d3.chord()
@@ -144,12 +144,9 @@ export class CircosComponent implements OnInit, OnChanges, AfterViewInit {
       .data((chords) => chords.groups)
       .enter().append('g');
 
-    console.log('TOTO');
-
     // Labels
     group.append('title')
       .text((d, i) => {
-        console.log(d);
         return `Ip adress: ${this.getLabel(keys[i])}`; // `Mac: ${keys[i]}\nTraffic: ${Math.round(d.value / 10) / 100}%`);
       });
 
